@@ -246,11 +246,6 @@ python prompt_leakage.py --outputs-dir outputs_v5 --results-dir results_v5_clust
 - Outputs: `table7_prompt_leakage.{tex,csv}`, `leakage_by_substance.csv`,
   `leakage_predictions.csv`, `leakage_wilcoxon_changes.csv`, `leakage_report.md`.
 
-
-```bash
-python grounding_analysis.py --outputs-dir outputs_v5 --out-dir results/grounding
-```
-
 ---
 
 ## 9. Full evaluation run (after step 1)
