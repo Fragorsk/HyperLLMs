@@ -257,7 +257,6 @@ python validation.py
 python run_error_analysis.py
 python table6_fields.py
 python prompt_leakage.py
-python grounding_analysis.py
 ```
 
 The default arguments of all evaluation scripts point to `outputs_v5/`,
