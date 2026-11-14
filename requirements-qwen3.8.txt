@@ -1,0 +1,34 @@
+# =============================================================================
+# HyperAI v5: Qwen3.8-27 inference only (environment llm-venv-vllm032)
+# Python 3.12.1
+#
+# Qwen3.8-27B (qwen3_5 architecture) requires vLLM >= 0.17, which conflicts
+# with the stack in requirements.txt. Install into a SEPARATE, fresh venv:
+#
+#   pip install -r requirements-qwen3.8.txt
+#
+# Evaluation of the outputs is done in the main environment (requirements.txt).
+#
+# Versions as recorded in outputs_v5/Qwen3_8-27_200_patients_run_meta.json.
+#
+# Notes:
+#   - CUDA 12.9 wheels (+cu129): NVIDIA driver 550 does not support CUDA 13.
+#   - vllm 0.32.0+cu129 is the official vLLM wheel built for CUDA 12.9;
+#     if pip cannot resolve it from the indexes below, install that wheel
+#     directly before running this file.
+#   - No nvcc on the machine, so run with: VLLM_USE_FLASHINFER_SAMPLER=0
+# =============================================================================
+
+--extra-index-url https://download.pytorch.org/whl/cu129
+
+# Inference: main_neurosymbolic_v5.py --model Qwen3.8-27
+vllm==0.32.0+cu129
+torch==2.13.0+cu129
+torchcodec==0.16.0+cu129
+transformers==5.19.0
+tokenizers==0.23.3
+xgrammar==0.2.8              # structured outputs (JSON-schema guided decoding)
+
+# Imported by main_neurosymbolic_v5.py (versions installed in this environment)
+numpy==2.3.5
+pandas==3.0.6

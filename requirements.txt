@@ -1,0 +1,59 @@
+# =============================================================================
+# HyperAI v5: LLM extraction from hypertension clinic notes
+# Python 3.12.1
+#
+# The experiment needs TWO separate environments, because Qwen3.8-27B
+# (qwen3_5 architecture) requires vLLM >= 0.17, which conflicts with the stack
+# used for all other models:
+#
+#   A) llm-venv          : inference of PLLuM-v2-12, Bielik-v3-11, Qwen3-14,
+#                          Ministral-3-14, Gemma3-12, Llama3.3-70
+#                          + evaluation / statistics / error analysis
+#   B) llm-venv-vllm032  : inference of Qwen3.8-27 only -> requirements-qwen3.8.txt
+#
+# Versions are pinned exactly as recorded in outputs_v5/*_run_meta.json
+# ("versions" field) and in the installed environments.
+#
+# Install environment A:   pip install -r requirements.txt
+# Install environment B:   pip install -r requirements-qwen3.8.txt (separate venv)
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# A1. Inference: main_neurosymbolic_v5.py (all models except Qwen3.8-27)
+# -----------------------------------------------------------------------------
+vllm==0.16.0
+torch==2.9.1                 # pinned by vllm 0.16.0
+transformers==4.57.6
+tokenizers==0.22.2
+xgrammar==0.1.29             # structured outputs (JSON-schema guided decoding)
+mistral_common==1.9.1        # Ministral-3-14: LLM(tokenizer_mode="mistral")
+
+
+# -----------------------------------------------------------------------------
+# A2. Evaluation, statistics, tables, figures
+#     validation.py, stats_clustered.py, matching.py, run_error_analysis.py,
+#     error_analysis.py, error_patterns.py, table6_fields.py, prompt_leakage.py,
+#     reconciliation.py, grounding_analysis.py, utils.py
+#     (main_neurosymbolic_v5.py also imports pandas)
+# -----------------------------------------------------------------------------
+numpy==2.2.6
+pandas==3.0.1
+scipy==1.18.0                # scipy.stats: Wilcoxon, Friedman
+jinja2==3.1.6                # needed by pandas DataFrame.to_latex()
+matplotlib==3.11.1           # error_patterns.py (figures)
+seaborn==0.13.2              # error_patterns.py (figures)
+rapidfuzz==3.14.6            # grounding_analysis.py only (fuzz.partial_ratio_alignment)
+
+# Optional: stats_clustered.holm() uses statsmodels' multipletests if it is
+# installed and otherwise falls back to its own Holm–Bonferroni implementation,
+# which gives the same result. statsmodels was NOT installed when the reported
+# results were produced.
+# statsmodels
+
+
+# -----------------------------------------------------------------------------
+# A3. Tests (python -m pytest tests -q; python -m unittest test_validation_wilcoxon)
+# -----------------------------------------------------------------------------
+pytest==9.1.1
+jsonschema==4.26.0           # tests/test_v5_schema.py
